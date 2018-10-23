@@ -11,7 +11,8 @@ def _get_points(image):
 
     Parameters
     ----------
-    image - image of user
+    image : string
+        string of filepath to image
 
     Returns
     -------
@@ -29,7 +30,6 @@ def _get_points(image):
 
     net = cv2.dnn.readNetFromCaffe(proto_file, weights_file)
 
-    # t = time.time()
     # input image dimensions for the network
     in_weight = frame.shape[1]
     in_height = frame.shape[0]
@@ -39,7 +39,6 @@ def _get_points(image):
     net.setInput(inp_blob)
 
     output = net.forward()
-    # print("time taken by network : {:.3f}".format(time.time() - t))
 
     h = output.shape[2]
     w = output.shape[3]
