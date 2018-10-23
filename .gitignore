@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Caffe Models
+model/
+
 # Distribution / packaging
 .Python
 build/
