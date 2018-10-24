@@ -25,41 +25,53 @@ class Squat(Motion):
         return benchmark_zone_indices
 
     def create_template_skeletons(self, front_view_points, profile_view_points):
+        # TODO Implement this method
         return [0, 1, 2, 3, 4]
 
     def score(self, user_skeletons):
+        # TODO Implement this method
         return 100
 
     # --------------- BENCHMARK ZONES ------------------
 
     def _0(self, front_view_points, profile_view_points):
+        # TODO Implement this method
         return 0
 
     def _1(self, front_view_points, profile_view_points):
+        # TODO Implement this method
         return 1
 
     def _2(self, front_view_points, profile_view_points):
+        # TODO Implement this method
         return 2
 
     def _3(self, front_view_points, profile_view_points):
+        # TODO Implement this method
         return 3
 
     def _4(self, front_view_points, profile_view_points):
+        # TODO Implement this method
         return 4
 
     # --------------- SKELETON SIMILARITY SCORES ------------------
 
     def _0_similarity(self, user_skeleton):
+        # TODO Implement this method
         return 0
 
     def _1_similarity(self, user_skeleton):
+        # TODO Implement this method
         return 1
 
     def _2_similarity(self, user_skeleton):
+        # TODO Implement this method
         return 2
 
     def _3_similarity(self, user_skeleton):
+        # TODO Implement this method
         return 3
 
     def _4_similarity(self, user_skeleton):
+        # TODO Implement this method
         return 4
