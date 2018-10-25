@@ -1,7 +1,7 @@
 import cv2
 
 
-def _get_points(image):
+def get_points_from_image(image):
     """
     COCO Output Format
     Neck – 1, Right Shoulder – 2, Right Elbow – 3, Right Wrist – 4,
@@ -67,6 +67,6 @@ def _get_points(image):
 
 
 def get_points(front_image, profile_image):
-    front_image_points = _get_points(front_image)
-    profile_image_points = _get_points(profile_image)
+    front_image_points = get_points_from_image(front_image)
+    profile_image_points = get_points_from_image(profile_image)
     return front_image_points, profile_image_points
