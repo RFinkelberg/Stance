@@ -27,8 +27,7 @@ class Squat(Motion):
         return benchmark_zone_indices
 
     def create_template_skeletons(self, front_view_points, profile_view_points):
-        # TODO Implement this method
-        return [0, 1, 2, 3, 4]
+        return [zone(front_view_points, profile_view_points) for zone in self.benchmark_zones]
 
     def score(self, user_skeletons):
         score = 0
