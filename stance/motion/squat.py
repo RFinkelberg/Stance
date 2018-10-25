@@ -8,6 +8,8 @@ class Squat(Motion):
         self.benchmark_zones = [self._0, self._1, self._2, self._3, self._4]
         self.similarity_scorers = [self._0_similarity, self._1_similarity,
                                    self._2_similarity, self._3_similarity, self._4_similarity]
+        self.scorers = [self._0_score, self._1_score,
+                        self._2_score, self._3_score, self._4_score]
 
     # --------------- IMPLEMENTED ABSTRACT METHODS ------------------
 
@@ -25,12 +27,13 @@ class Squat(Motion):
         return benchmark_zone_indices
 
     def create_template_skeletons(self, front_view_points, profile_view_points):
-        # TODO Implement this method
-        return [0, 1, 2, 3, 4]
+        return [zone(front_view_points, profile_view_points) for zone in self.benchmark_zones]
 
     def score(self, user_skeletons):
-        # TODO Implement this method
-        return 100
+        score = 0
+        for i in range(len(self.scorers)):
+            score += self.scorers[i](user_skeletons[i])
+        return score
 
     # --------------- BENCHMARK ZONES ------------------
 
@@ -73,5 +76,28 @@ class Squat(Motion):
         return 3
 
     def _4_similarity(self, user_skeleton):
+        # TODO Implement this method
+        return 4
+
+    # --------------- SKELETON SCORERS ------------------
+    # Each score is from range [0, 20] so that total is out of 100
+
+    def _0_score(self, user_skeleton):
+        # TODO Implement this method
+        return 0
+
+    def _1_score(self, user_skeleton):
+        # TODO Implement this method
+        return 1
+
+    def _2_score(self, user_skeleton):
+        # TODO Implement this method
+        return 2
+
+    def _3_score(self, user_skeleton):
+        # TODO Implement this method
+        return 3
+
+    def _4_score(self, user_skeleton):
         # TODO Implement this method
         return 4

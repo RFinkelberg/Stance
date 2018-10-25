@@ -66,6 +66,7 @@ def _get_points(image):
     return points
 
 
-def template_fitting(front_image, profile_image):
+def get_points(front_image, profile_image):
     front_image_points = _get_points(front_image)
     profile_image_points = _get_points(profile_image)
+    return front_image_points, profile_image_points
