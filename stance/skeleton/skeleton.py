@@ -32,9 +32,10 @@ class Skeleton:
     def centered_points(self):
         """
         Computes the points but changes the origin to where the right ankle is.
+        
         Returns
         -------
-        centered_body_points
+        centered_body_points : List[Points]
         """
         centered_body_points = []
         for body_point in self.body_points:
