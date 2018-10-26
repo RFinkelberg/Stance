@@ -24,7 +24,7 @@ class Squat(Motion):
                 np.append(score_array, similarity_scorer(user_skeleton))
             index_array = np.argmin(score_array)
             benchmark_zone_indices.append(index_array[0])
-        return benchmark_zone_indices
+        return [user_skeletons[benchmark_zone_index] for benchmark_zone_index in benchmark_zone_indices]
 
     def create_template_skeletons(self, front_view_points, profile_view_points):
         return [zone(front_view_points, profile_view_points) for zone in self.benchmark_zones]
