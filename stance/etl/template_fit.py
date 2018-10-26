@@ -1,5 +1,12 @@
 import cv2
 
+"""
+@author: Vikas Gupta
+@organization: LearnOpenCV
+@see: https://www.learnopencv.com/deep-learning-based-human-pose-estimation-using-opencv-cpp-python/
+@see: https://github.com/spmallick/learnopencv/blob/master/OpenPose/OpenPoseImage.py
+"""
+
 
 def get_points_from_image(image):
     """
