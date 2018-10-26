@@ -36,8 +36,8 @@ class Motion(ABC):
 
         Returns
         -------
-        benchmark_zones : array of indices
-            marks which skeletons are in the benchmark zones
+        benchmark_zones : List[Skeletons]
+            list of skeletons representing the benchmark zones
 
         """
         raise NotImplementedError

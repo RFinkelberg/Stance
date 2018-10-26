@@ -43,7 +43,7 @@ class Squat(Motion):
 
     def create_template_skeletons(self, front_view_points, profile_view_points):
 
-    # --------------- BENCHMARK ZONES ------------------
+        # --------------- BENCHMARK ZONES ------------------
         def _0(front_view_points, profile_view_points):
             # TODO Implement this method
             return 0
