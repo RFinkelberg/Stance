@@ -1,14 +1,14 @@
-from .motion import Motion
+from .Motion import Motion
 
 
 class Squat(Motion):
     def __init__(self, front_view_points, profile_view_points):
-        self.template_skeletons = self.create_template_skeletons(front_view_points,
-                                                                 profile_view_points)
+        self.template_skeletons = self.create_template_skeletons(front_view_points, profile_view_points)
 
     # --------------- IMPLEMENTED ABSTRACT METHODS ------------------
 
-    def find_benchmark_zones_of_user(self, user_skeletons):
+    @staticmethod
+    def find_benchmark_zones_of_user(user_skeletons):
         """
         SEE MOTION DOCSTRING
         """
@@ -40,7 +40,6 @@ class Squat(Motion):
         return [min(idxs, key=lambda i: scorer(i))
                 for scorer in similarity_scorers]
 
-
     def create_template_skeletons(self, front_view_points, profile_view_points):
 
         # --------------- BENCHMARK ZONES ------------------
@@ -64,9 +63,10 @@ class Squat(Motion):
             # TODO Implement this method
             return 4
 
-        return [zone(front_view_points, profile_view_points) for zone in self.benchmark_zones]
+        benchmark_zones = [_0, _1, _2, _3, _4]
+        return [zone(front_view_points, profile_view_points) for zone in benchmark_zones]
 
-
+    @staticmethod
     def score(user_skeletons):
 
         # --------------- SKELETON SCORERS ------------------
@@ -94,5 +94,4 @@ class Squat(Motion):
 
         scorers = [_0_score, _1_score, _2_score, _3_score, _4_score]
         assert len(user_skeletons) == len(scorers), "Must have as many skeletons as scorers"
-        return sum(scorer(skeleton) for scorer, skeleton in zip(scorers,
-                                                                user_skeletons))
+        return sum(scorer(skeleton) for scorer, skeleton in zip(scorers, user_skeletons))
