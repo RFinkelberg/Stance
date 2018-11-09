@@ -30,17 +30,6 @@ class SKVector(object):
         return np.dot(self.vec, other.vec) / magnitude
 
 
-    def magnitude(self) -> float:
-        """Gives the magnitude of self
-
-        Returns
-        -------
-        float
-            the 2 norm of self
-        """
-        return np.linalg.norm(self.vec)
-
-
     def __repr__(self) -> str:
         return 'SKVector: {} -> {}'.format(tuple(self.head), tuple(self.tail))
 
@@ -67,4 +56,16 @@ class Skeleton(object):
 
 
     def __getitem__(self, key: str) -> SKVector:
+        """ Gets a certain SKVector from the skeleton
+
+        Parameters
+        ----------
+        key : str
+            key of vector to get
+
+        Returns
+        -------
+        SKVector
+            Corresponding vector in skeleton
+        """
         return self.vectors[key]
