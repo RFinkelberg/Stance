@@ -13,7 +13,8 @@ class SKVector(object):
 
 
     def cos_similarity(self, other: 'SKVector') -> float:
-        """Computes the cosine similarity between this vector and another, defined
+        """
+        Computes the cosine similarity between this vector and another, defined
         as the normalized inner product between them
 
         Parameters
@@ -57,7 +58,8 @@ class Skeleton(object):
 
 
     def __getitem__(self, key: str) -> SKVector:
-        """ Gets a certain SKVector from the skeleton
+        """ 
+        Gets a certain SKVector from the skeleton
 
         Parameters
         ----------
