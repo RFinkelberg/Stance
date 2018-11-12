@@ -13,7 +13,8 @@ class SKVector(object):
 
 
     def cos_similarity(self, other: 'SKVector') -> float:
-        """Computes the cosine similarity between this vector and another
+        """Computes the cosine similarity between this vector and another, defined
+        as the normalized inner product between them
 
         Parameters
         ----------
@@ -23,8 +24,8 @@ class SKVector(object):
         Returns
         -------
         float
-            cosine similarity between self and other with higher values being
-            more similar
+            cosine similarity between self and other. Approaches -1 or 1 for linearly
+            dependent vectors and 0 for completely orthogonal vectors
         """
         magnitude = np.linalg.norm(self.vec) * np.linalg.norm(other.vec)
         return np.dot(self.vec, other.vec) / magnitude
