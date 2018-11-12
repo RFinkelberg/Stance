@@ -53,12 +53,18 @@ class Skeleton(object):
             'l_upper_leg': SKVector(head=coco_points[12], tail=coco_points[11]),
             'r_upper_leg': SKVector(head=coco_points[9], tail=coco_points[8]),
             'l_spine': SKVector(head=coco_points[11], tail=coco_points[1]),
-            'r_spine': SKVector(head=coco_points[8], tail=coco_points[1])
+            'r_spine': SKVector(head=coco_points[8], tail=coco_points[1]),
+            'l_lower_arm': SKVector(head=coco_points[7], tail=coco_points[6]),
+            'r_lower_arm': SKVector(head=coco_points[4], tail=coco_points[3]),
+            'l_upper_arm': SKVector(head=coco_points[6], tail=coco_points[5]),
+            'r_upper_arm': SKVector(head=coco_points[3], tail=coco_points[2]),
+            'l_upper_back': SKVector(head=coco_points[5], tail=coco_points[1]),
+            'r_upper_back': SKVector(head=coco_points[2], tail=coco_points[1])
         }
 
 
     def __getitem__(self, key: str) -> SKVector:
-        """ 
+        """
         Gets a certain SKVector from the skeleton
 
         Parameters
