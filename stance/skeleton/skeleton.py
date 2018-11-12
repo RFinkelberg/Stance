@@ -1,12 +1,13 @@
 import numpy as np
-from typing import Dict, Tuple, Sequence
+from typing import Dict, Tuple, Sequence, Optional
 
 
-COCOPts = Sequence[Tuple[float, float]]
+Point = Tuple[float, float]
+COCOPts = Sequence[Point]
 
 
 class SKVector(object):
-    def __init__(self, head: Tuple[float, float], tail: Tuple[float, float]) -> None:
+    def __init__(self, head: Point, tail: Point) -> None:
         self.head: np.ndarray = np.array(head)
         self.tail: np.ndarray = np.array(tail)
         self.vec = self.head - self.tail
@@ -47,23 +48,34 @@ class Skeleton(object):
             points in the COCO format
         """
         self.body_points = coco_points
-        self.vectors: Dict[str, SKVector] = {
-            'l_lower_leg': SKVector(head=coco_points[13], tail=coco_points[12]),
-            'r_lower_leg': SKVector(head=coco_points[10], tail=coco_points[9]),
-            'l_upper_leg': SKVector(head=coco_points[12], tail=coco_points[11]),
-            'r_upper_leg': SKVector(head=coco_points[9], tail=coco_points[8]),
-            'l_spine': SKVector(head=coco_points[11], tail=coco_points[1]),
-            'r_spine': SKVector(head=coco_points[8], tail=coco_points[1]),
-            'l_lower_arm': SKVector(head=coco_points[7], tail=coco_points[6]),
-            'r_lower_arm': SKVector(head=coco_points[4], tail=coco_points[3]),
-            'l_upper_arm': SKVector(head=coco_points[6], tail=coco_points[5]),
-            'r_upper_arm': SKVector(head=coco_points[3], tail=coco_points[2]),
-            'l_upper_back': SKVector(head=coco_points[5], tail=coco_points[1]),
-            'r_upper_back': SKVector(head=coco_points[2], tail=coco_points[1])
+        self.vectors: Dict[str, Optional[SKVector]] = {
+            'l_lower_leg': Skeleton.create_vector(coco_points[13], coco_points[12]),
+            'r_lower_leg': Skeleton.create_vector(coco_points[10], coco_points[9]),
+            'l_upper_leg': Skeleton.create_vector(coco_points[12], coco_points[11]),
+            'r_upper_leg': Skeleton.create_vector(coco_points[9], coco_points[8]),
+            'l_spine': Skeleton.create_vector(coco_points[11], coco_points[1]),
+            'r_spine': Skeleton.create_vector(coco_points[8], coco_points[1]),
+            'l_lower_arm': Skeleton.create_vector(coco_points[7], coco_points[6]),
+            'r_lower_arm': Skeleton.create_vector(coco_points[4], coco_points[3]),
+            'l_upper_arm': Skeleton.create_vector(coco_points[6], coco_points[5]),
+            'r_upper_arm': Skeleton.create_vector(coco_points[3], coco_points[2]),
+            'l_upper_back': Skeleton.create_vector(coco_points[5], coco_points[1]),
+            'r_upper_back': Skeleton.create_vector(coco_points[2], coco_points[1]),
         }
 
 
-    def __getitem__(self, key: str) -> SKVector:
+    @staticmethod
+    def create_vector(head: Point, tail: Point) -> Optional[SKVector]:
+        """
+        Creates an SKVector from tail->head, or returns None if either point
+        is invalid (that is, it wasn't found by COCO)
+        """
+        if head is None or tail is None:
+            return None
+        return SKVector(head=head, tail=tail)
+
+
+    def __getitem__(self, key: str) -> Optional[SKVector]:
         """
         Gets a certain SKVector from the skeleton
 
@@ -74,7 +86,7 @@ class Skeleton(object):
 
         Returns
         -------
-        SKVector
-            Corresponding vector in skeleton
+        Optional[SKVector]
+            Corresponding vector in skeleton or None if the vector doesn't exist
         """
         return self.vectors[key]
