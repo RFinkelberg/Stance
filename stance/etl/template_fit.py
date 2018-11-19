@@ -23,7 +23,8 @@ def get_points_from_image(image):
 
     Returns
     -------
-    points - points relating to body parts of the user from the image
+    points : List[Tuple[int, int]]
+        points relating to body parts of the user from the image
         a certain point is None if no relative point is found
     """
     proto_file = "../../model/pose_deploy_linevec.prototxt"
