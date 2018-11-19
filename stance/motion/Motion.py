@@ -25,11 +25,12 @@ class Motion(ABC):
         """
         raise NotImplementedError
 
-    @staticmethod
+
     @abstractmethod
     def find_benchmark_zones_of_user(user_skeletons):
         """
-        Compares two skeletons to determine how similar the two skeletons are.
+        Find which user skeletons map closest to the template
+        skeletons
 
         Parameters
         ----------
@@ -43,7 +44,7 @@ class Motion(ABC):
         """
         raise NotImplementedError
 
-    @staticmethod
+
     @abstractmethod
     def score(user_skeletons):
         """
