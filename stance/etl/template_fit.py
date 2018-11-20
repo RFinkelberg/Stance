@@ -18,8 +18,8 @@ def get_points_from_image(image):
 
     Parameters
     ----------
-    image : string
-        string of filepath to image
+    image : ndarray
+        numpy array containing image
 
     Returns
     -------
@@ -27,11 +27,11 @@ def get_points_from_image(image):
         points relating to body parts of the user from the image
         a certain point is None if no relative point is found
     """
-    proto_file = "../../model/pose_deploy_linevec.prototxt"
-    weights_file = "../../model/pose_iter_440000.caffemodel"
+    proto_file = "../../../model/pose_deploy_linevec.prototxt"
+    weights_file = "../../../model/pose_iter_440000.caffemodel"
     n_points = 18
 
-    frame = cv2.imread(image)
+    frame = image
     frame_width = frame.shape[1]
     frame_height = frame.shape[0]
     threshold = 0.1
@@ -39,8 +39,8 @@ def get_points_from_image(image):
     net = cv2.dnn.readNetFromCaffe(proto_file, weights_file)
 
     # input image dimensions for the network
-    in_weight = frame.shape[1]
-    in_height = frame.shape[0]
+    in_weight = frame.shape[1]  # 368
+    in_height = frame.shape[0]  # 368
     inp_blob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (in_weight, in_height),
                                      (0, 0, 0), swapRB=False, crop=False)
 
@@ -75,6 +75,6 @@ def get_points_from_image(image):
 
 
 def get_points(front_image, profile_image):
-    front_image_points = get_points_from_image(front_image)
-    profile_image_points = get_points_from_image(profile_image)
+    front_image_points = get_points_from_image(cv2.imread(front_image))
+    profile_image_points = get_points_from_image(cv2.imread(profile_image))
     return front_image_points, profile_image_points

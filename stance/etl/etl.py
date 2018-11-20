@@ -1,8 +1,8 @@
 import cv2
 import time
 import numpy as np
-from template_fit import get_points_from_image
-from skeleton import Skeleton
+from etl.template_fit import get_points_from_image
+from skeleton.skeleton import Skeleton
 
 
 def get_user_skeletons(video_input):
@@ -26,9 +26,14 @@ def get_user_skeletons(video_input):
     user_skeletons = []
 
     success = 1
+    i = 1
     while success:
         success, image = vid_obj.read()
-
+        if image is None:
+            break
+        start_time = time.time()
         user_skeletons.append(Skeleton(get_points_from_image(image)))
+        print(str(i) + " frame in " + str(time.time() - start_time) + " seconds")
+        i += 1
 
     return user_skeletons
