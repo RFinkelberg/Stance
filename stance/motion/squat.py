@@ -1,4 +1,7 @@
 from .Motion import Motion
+import json
+from skeleton.skeleton import Skeleton, SKVector
+import math
 
 
 class Squat(Motion):
@@ -41,30 +44,30 @@ class Squat(Motion):
                 for scorer in similarity_scorers]
 
     def create_template_skeletons(self, front_view_points, profile_view_points):
+        """
+        See Motion Docstring
+        """
+        benchmark_zones = {}
+        with open("etl/benchmark_zones.json", 'r') as fp:
+            # Loads benchmark zone skeletons from JSON file
+            benchmark_zones = json.load(fp)
 
-        # --------------- BENCHMARK ZONES ------------------
-        def _0(front_view_points, profile_view_points):
-            # TODO Implement this method
-            return 0
+        def _find_template_skeleton(skeleton_number):
+            """
+            Uses frames 12, 32, 79, 105, and 129 from etl/squat.mp4 to
+            create normalized template skeletons that can be used for comparisons.
 
-        def _1(front_view_points, profile_view_points):
-            # TODO Implement this method
-            return 1
+            Parameters
+            ----------
+            skeleton_number : int
+                Number between 0 - 4 that represents which of the 5 benchmark skeletons to return.
+            """
+            template_coco_points = benchmark_zones[str(skeleton_number)]
+            template_skeleton = Skeleton(template_coco_points)
+            template_skeleton.normalize()
+            return template_skeleton
 
-        def _2(front_view_points, profile_view_points):
-            # TODO Implement this method
-            return 2
-
-        def _3(front_view_points, profile_view_points):
-            # TODO Implement this method
-            return 3
-
-        def _4(front_view_points, profile_view_points):
-            # TODO Implement this method
-            return 4
-
-        benchmark_zones = [_0, _1, _2, _3, _4]
-        return [zone(front_view_points, profile_view_points) for zone in benchmark_zones]
+        return [_find_template_skeleton(i) for i in range(5)]
 
     @staticmethod
     def score(user_skeletons):

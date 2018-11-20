@@ -11,7 +11,8 @@ class SKVector(object):
         self.head: np.ndarray = np.array(head)
         self.tail: np.ndarray = np.array(tail)
         self.vec = self.head - self.tail
-
+        self.magnitude = self._magnitude()
+        self.direction = self._direction()
 
     def cos_similarity(self, other: 'SKVector') -> float:
         """
@@ -29,12 +30,17 @@ class SKVector(object):
             cosine similarity between self and other. Approaches -1 or 1 for linearly
             dependent vectors and 0 for completely orthogonal vectors
         """
-        magnitude = np.linalg.norm(self.vec) * np.linalg.norm(other.vec)
+        magnitude = self.magnitude * np.linalg.norm(other.vec)
         return np.dot(self.vec, other.vec) / magnitude
-
 
     def __repr__(self) -> str:
         return 'SKVector: {} -> {}'.format(tuple(self.head), tuple(self.tail))
+
+    def _magnitude(self) -> float:
+        return np.linalg.norm(self.vec)
+
+    def _direction(self) -> np.ndarray:
+        return self.vec / self.magnitude
 
 
 class Skeleton(object):
@@ -63,7 +69,6 @@ class Skeleton(object):
             'r_upper_back': Skeleton.create_vector(coco_points[2], coco_points[1]),
         }
 
-
     @staticmethod
     def create_vector(head: Point, tail: Point) -> Optional[SKVector]:
         """
@@ -73,7 +78,6 @@ class Skeleton(object):
         if head is None or tail is None:
             return None
         return SKVector(head=head, tail=tail)
-
 
     def __getitem__(self, key: str) -> Optional[SKVector]:
         """
@@ -90,3 +94,11 @@ class Skeleton(object):
             Corresponding vector in skeleton or None if the vector doesn't exist
         """
         return self.vectors[key]
+
+    def normalize(self) -> None:
+        """
+        Normalizes all the original vectors.
+        """
+        for vector in self.vectors.keys():
+            if self.vectors[vector]:
+                self.vectors[vector] = self.vectors[vector].direction
