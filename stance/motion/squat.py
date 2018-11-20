@@ -40,8 +40,7 @@ class Squat(Motion):
         float
             cumulative similarity score between this and other
         """
-        scored_vectors = ('l_lower_leg', 'r_lower_leg', 'l_upper_leg', 'r_upper_leg',
-                          'l_spine', 'r_spine')
+        scored_vectors = ('l_lower_leg', 'l_upper_leg', 'l_spine')
         def _compare(label: str):
             u = this.vectors[label]
             v = other.vectors[label]
