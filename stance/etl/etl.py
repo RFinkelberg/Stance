@@ -1,6 +1,5 @@
 import cv2
 import time
-import numpy as np
 from etl.template_fit import get_points_from_image
 from skeleton.skeleton import Skeleton
 

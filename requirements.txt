@@ -1,2 +1,11 @@
 numpy==1.15.2
 opencv-python==3.4.3.18
+cloudpickle==0.6.1
+cycler==0.10.0
+kiwisolver==1.0.1
+matplotlib==3.0.2
+numpy==1.15.2
+opencv-python==3.4.3.18
+pyparsing==2.3.0
+python-dateutil==2.7.5
+six==1.11.0

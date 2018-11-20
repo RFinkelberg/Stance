@@ -2,29 +2,32 @@ import argparse
 from etl import template_fit, etl
 from motion.squat import Squat
 from predict import score, overlay
+import pickle
 
 if __name__ == "__main__":
+    # Example calling: python main.py -v etl/squat.mp4
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--front_view_image", help="image containing the front view of the user")
-    parser.add_argument("-p", "--profile_view_image", help="image containing the profile view of the user")
-    parser.add_argument("-v", "--motion_video", help="video containing the user performing a motion")
+    parser.add_argument("-v", "--motion_video", help="filepath to video containing the user performing a motion")
     args = parser.parse_args()
 
-    # Find the front and profile skeletons
-    print("Fitting images")
-    front_view_points, profile_view_points = template_fit.get_points(args.front_view_image, args.profile_view_image)
-
-    # Use the skeletons to start the motion
     print("Starting Motion")
-    motion = Squat(front_view_points, profile_view_points)
+    # Set the motion to be Squat
+    motion = Squat()
 
     # Find the user skeletons throughout the video
     print("Fitting Video")
     user_skeletons = etl.get_user_skeletons(args.motion_video)
+    # with open("squat_user_skeletons.json", "rb") as fp:  # Use with etl/squat.mp4
+    #     user_skeletons = pickle.load(fp)
+    # with open("squatbad_user_skeletons.json", 'rb') as fp:  # Use with etl/squatbad.mp4
+    #     user_skeletons = pickle.load(fp)
+    # with open("squatterrible_user_skeletons.json", 'rb') as fp:  # Use with etl/squatpoop.mp4
+    #     user_skeletons = pickle.load(fp)
 
     # Find when the user was in a benchmark zone
     print("Finding benchmark zones")
     benchmark_zone_skeletons = motion.find_benchmark_zones_of_user(user_skeletons)
+    benchmark_zone_indices = motion.find_benchmark_indices_of_user(user_skeletons)
 
     # Overlay the template skeletons on the user's video
     print("Overlaying Video")

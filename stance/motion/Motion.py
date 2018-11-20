@@ -3,18 +3,10 @@ from abc import ABC, abstractmethod
 
 class Motion(ABC):
     @abstractmethod
-    def create_template_skeletons(self, front_view_points, profile_view_points):
+    def create_template_skeletons(self):
         """
         Using the body points from a user standing from two views, create
         template skeletons for benchmark zones that define the specific motion.
-
-        Parameters
-        ----------
-        front_view_points : Skeleton
-            points in the style of the COCO output (defined in template_fit)
-
-        profile_view_points : Skeleton
-            points in the style of the COCO output (defined in template_fit)
 
         Returns
         -------
