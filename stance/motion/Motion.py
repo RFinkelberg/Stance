@@ -27,7 +27,7 @@ class Motion(ABC):
 
 
     @abstractmethod
-    def find_benchmark_zones_of_user(user_skeletons):
+    def find_benchmark_zones_of_user(self, user_skeletons):
         """
         Find which user skeletons map closest to the template
         skeletons
@@ -46,7 +46,7 @@ class Motion(ABC):
 
 
     @abstractmethod
-    def score(user_skeletons):
+    def score(self, user_skeletons):
         """
         Uses user's skeleton to make a score value that defines how close the user
         is to performing the motion perfectly.

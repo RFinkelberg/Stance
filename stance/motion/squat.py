@@ -1,10 +1,14 @@
-from .Motion import Motion
 from functools import partial
+from typing import Sequence
+
+from skeleton.skeleton import Skeleton
+from .Motion import Motion
 
 
 class Squat(Motion):
     def __init__(self, front_view_points, profile_view_points):
-        self.template_skeletons = self.create_template_skeletons(front_view_points, profile_view_points)
+        self.template_skeletons = self.create_template_skeletons(front_view_points,
+                                                                 profile_view_points)
 
     # --------------- IMPLEMENTED ABSTRACT METHODS ------------------
 
@@ -13,7 +17,7 @@ class Squat(Motion):
         SEE MOTION DOCSTRING
         """
         benchmark_zones = []
-        for template in template_skeletons:
+        for template in self.template_skeletons:
             cmp = partial(Squat.compare_skeletons, template)
             benchmark_zones.append(max(user_skeletons, key=cmp))
         return benchmark_zones
@@ -38,9 +42,9 @@ class Squat(Motion):
         """
         scored_vectors = ('l_lower_leg', 'r_lower_leg', 'l_upper_leg', 'r_upper_leg',
                           'l_spine', 'r_spine')
-        def _compare(s):
-            u = this.vectors[s]
-            v = other.vectors[s]
+        def _compare(label: str):
+            u = this.vectors[label]
+            v = other.vectors[label]
             if u is None or v is None:
                 return 0
             return u.cos_similarity(v)
@@ -105,3 +109,4 @@ class Squat(Motion):
         # scorers = [_0_score, _1_score, _2_score, _3_score, _4_score]
         # assert len(user_skeletons) == len(scorers), "Must have as many skeletons as scorers"
         # return sum(scorer(skeleton) for scorer, skeleton in zip(scorers, user_skeletons))
+        pass
