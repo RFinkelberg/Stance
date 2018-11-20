@@ -25,7 +25,6 @@ class Motion(ABC):
         """
         raise NotImplementedError
 
-
     @abstractmethod
     def find_benchmark_zones_of_user(self, user_skeletons):
         """
@@ -43,7 +42,6 @@ class Motion(ABC):
 
         """
         raise NotImplementedError
-
 
     @abstractmethod
     def score(self, user_skeletons):

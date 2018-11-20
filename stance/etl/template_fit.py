@@ -39,8 +39,8 @@ def get_points_from_image(image):
     net = cv2.dnn.readNetFromCaffe(proto_file, weights_file)
 
     # input image dimensions for the network
-    in_weight = 368  # frame.shape[1]
-    in_height = 368  # frame.shape[0]
+    in_weight = frame.shape[1]  # 368
+    in_height = frame.shape[0]  # 368
     inp_blob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (in_weight, in_height),
                                      (0, 0, 0), swapRB=False, crop=False)
 

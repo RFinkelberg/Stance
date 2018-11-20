@@ -25,7 +25,6 @@ class Squat(Motion):
             benchmark_zones.append(max(user_skeletons, key=cmp))
         return benchmark_zones
 
-
     @staticmethod
     def compare_skeletons(this, other: Skeleton) -> float:
         """
@@ -44,6 +43,7 @@ class Squat(Motion):
             cumulative similarity score between this and other
         """
         scored_vectors = ('l_lower_leg', 'l_upper_leg', 'l_spine')
+
         def _compare(label: str):
             u = this.vectors[label]
             v = other.vectors[label]
@@ -53,14 +53,12 @@ class Squat(Motion):
 
         return sum(map(_compare, scored_vectors)) / (len(scored_vectors))
 
-
-
     def create_template_skeletons(self, front_view_points, profile_view_points):
         """
         See Motion Docstring
         """
         benchmark_zones = {}
-        with open("etl/benchmark_zones.json", 'r') as fp:
+        with open("etl/squat_benchmark_zones.json", 'r') as fp:
             # Loads benchmark zone skeletons from JSON file
             benchmark_zones = json.load(fp)
 
@@ -80,7 +78,6 @@ class Squat(Motion):
             return template_skeleton
 
         return [_find_template_skeleton(i) for i in range(5)]
-
 
     def score(self, user_skeletons):
 
