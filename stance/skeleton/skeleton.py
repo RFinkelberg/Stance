@@ -101,4 +101,4 @@ class Skeleton(object):
         """
         for vector in self.vectors.keys():
             if self.vectors[vector]:
-                self.vectors[vector] = self.vectors[vector].direction
+                self.vectors[vector].vec = self.vectors[vector].direction

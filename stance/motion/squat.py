@@ -1,29 +1,71 @@
 from functools import partial
 from typing import Sequence
-
-from skeleton.skeleton import Skeleton
-from .Motion import Motion
 import json
+from .Motion import Motion
+import matplotlib.pyplot as plt
 from skeleton.skeleton import Skeleton, SKVector
-import math
+import numpy as np
 
 
 class Squat(Motion):
-    def __init__(self, front_view_points, profile_view_points):
-        self.template_skeletons = self.create_template_skeletons(front_view_points,
-                                                                 profile_view_points)
+    def __init__(self):
+        self.template_skeletons = self.create_template_skeletons()
 
     # --------------- IMPLEMENTED ABSTRACT METHODS ------------------
+
+    def find_benchmark_indices_of_user(self, user_skeletons: Sequence[Skeleton]) -> Sequence[Skeleton]:
+        """
+        SEE MOTION DOCSTRING
+        """
+        def gaussian(x, mu, sig) -> float:
+            return np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
+
+        benchmark_zones = []
+        score_array = []
+        gaussian_dists = [(0 * 24 + 10, 20), (1 * 24 + 10, 20), (2 * 24 + 10, 20), (3 * 24 + 10, 20), (4 * 24 + 10, 20)]
+
+        for template in self.template_skeletons:
+            cmp = partial(Squat.compare_skeletons, template)
+            # benchmark_zones.append(min(user_skeletons, key=cmp))
+            # print(min(range(len(user_skeletons)), key=lambda i: cmp(user_skeletons[i])))
+            score_array.append(list(map(cmp, user_skeletons)))
+        xs = np.arange(0, len(user_skeletons), 1)
+        for scores, (mu, sig) in zip(score_array, gaussian_dists):
+            scores = [score + gaussian(x, mu, sig)/20 for x, score in zip(xs, scores)]
+            benchmark_zones.append(int(np.argmax(np.array(scores))))
+        return benchmark_zones
 
     def find_benchmark_zones_of_user(self, user_skeletons: Sequence[Skeleton]) -> Sequence[Skeleton]:
         """
         SEE MOTION DOCSTRING
         """
+        def gaussian(x, mu, sig) -> float:
+            return np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
+
         benchmark_zones = []
+        score_array = []
+        gaussian_dists = [(0 * 24 + 10, 20), (1 * 24 + 10, 20), (2 * 24 + 10, 20), (3 * 24 + 10, 20), (4 * 24 + 10, 20)]
+
         for template in self.template_skeletons:
             cmp = partial(Squat.compare_skeletons, template)
-            benchmark_zones.append(max(user_skeletons, key=cmp))
+            # benchmark_zones.append(min(user_skeletons, key=cmp))
+            # print(min(range(len(user_skeletons)), key=lambda i: cmp(user_skeletons[i])))
+            score_array.append(list(map(cmp, user_skeletons)))
+        xs = np.arange(0, len(user_skeletons), 1)
+        for scores, (mu, sig) in zip(score_array, gaussian_dists):
+            scores = [score + gaussian(x, mu, sig)/20 for x, score in zip(xs, scores)]
+            benchmark_zones.append(user_skeletons[int(np.argmax(np.array(scores)))])
+            print(int(np.argmax(np.array(scores))))
         return benchmark_zones
+        # for template in self.template_skeletons:
+        #     cmp = partial(Squat.compare_skeletons, template)
+        #     benchmark_zones.append(list(map(cmp, user_skeletons)))
+        # xs = np.arange(0, len(user_skeletons), 1)
+        # colors = ('r-', 'g-', 'b-', 'o-', 'p-')
+        # for c, scores, (mu, sig) in zip(colors, benchmark_zones, gaussian_dists):
+        #     scores = [score + gaussian(x, mu, sig)/4 for x, score in zip(xs, scores)]
+        #     plt.plot(xs, scores, c)
+        # plt.show()
 
     @staticmethod
     def compare_skeletons(this, other: Skeleton) -> float:
@@ -53,7 +95,7 @@ class Squat(Motion):
 
         return sum(map(_compare, scored_vectors)) / (len(scored_vectors))
 
-    def create_template_skeletons(self, front_view_points, profile_view_points):
+    def create_template_skeletons(self):
         """
         See Motion Docstring
         """
@@ -74,38 +116,22 @@ class Squat(Motion):
             """
             template_coco_points = benchmark_zones[str(skeleton_number)]
             template_skeleton = Skeleton(template_coco_points)
-            template_skeleton.normalize()
             return template_skeleton
 
         return [_find_template_skeleton(i) for i in range(5)]
 
     def score(self, user_skeletons):
+        """
+        See Motion Docstring
+        """
+        # Each score total is out of 100
+        weights = np.array([5, 20, 50, 20, 5])  # adds up to 100
+        exponent_weights = np.array([1, 2, 20, 2, 1])
+        scores = list(map(lambda p: Squat.compare_skeletons(p[0], p[1]) ** p[2],
+                          zip(self.template_skeletons, user_skeletons, exponent_weights)))
+        return np.dot(weights, scores)
 
-        # --------------- SKELETON SCORERS ------------------
-        # Each score is from range [0, 20] so that total is out of 100
-        # TODO or we could just normalize
-
-        # def _0_score(user_skeleton):
-        #     # TODO Implement this method
-        #     return 0
-
-        # def _1_score(user_skeleton):
-        #     # TODO Implement this method
-        #     return 1
-
-        # def _2_score(user_skeleton):
-        #     # TODO Implement this method
-        #     return 2
-
-        # def _3_score(user_skeleton):
-        #     # TODO Implement this method
-        #     return 3
-
-        # def _4_score(user_skeleton):
-        #     # TODO Implement this method
-        #     return 4
-
-        # scorers = [_0_score, _1_score, _2_score, _3_score, _4_score]
-        # assert len(user_skeletons) == len(scorers), "Must have as many skeletons as scorers"
-        # return sum(scorer(skeleton) for scorer, skeleton in zip(scorers, user_skeletons))
-        pass
+    def raw_scores(self, user_skeletons):
+        scores = list(map(lambda p: Squat.compare_skeletons(p[0], p[1]),
+                          zip(self.template_skeletons, user_skeletons)))
+        return scores
