@@ -30,7 +30,8 @@ if __name__ == "__main__":
         with open("squatterrible_user_skeletons.json", 'rb') as fp:
             user_skeletons = pickle.load(fp)
     else:
-        raise Exception("The pickle for the motion video given has not been computed, please run without --use_pickle")
+        raise ValueError("The pickle for the motion video {} given has not been computed,"
+                         " please run without --use_pickle".format(args.motion_video))
 
     # Find when the user was in a benchmark zone
     print("Finding benchmark zones")
