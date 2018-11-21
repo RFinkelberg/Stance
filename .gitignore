@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Caffe Models
-model/
+stance/model/
 
 # Distribution / packaging
 .Python

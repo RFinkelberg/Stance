@@ -27,8 +27,8 @@ def get_points_from_image(image):
         points relating to body parts of the user from the image
         a certain point is None if no relative point is found
     """
-    proto_file = "../../../model/pose_deploy_linevec.prototxt"
-    weights_file = "../../../model/pose_iter_440000.caffemodel"
+    proto_file = "../model/pose_deploy_linevec.prototxt"
+    weights_file = "../model/pose_iter_440000.caffemodel"
     n_points = 18
 
     frame = image
