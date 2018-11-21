@@ -8,9 +8,8 @@ if __name__ == "__main__":
     # Example calling: python main.py -v etl/squat.mp4
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--motion_video", help="filepath to video containing the user performing a motion")
-    parser.add_argument("-p", "--use_pickle",
-                        help="Number in range(0, 3) which signifies which pickled file to test the code without "
-                             "running the neural network")
+    parser.add_argument("-p", "--use_pickle", help="uses the pickle file corresponding to the video file given",
+                        action="store_true")
     args = parser.parse_args()
 
     print("Starting Motion")
@@ -21,20 +20,17 @@ if __name__ == "__main__":
     print("Fitting Video")
     if not args.use_pickle:
         user_skeletons = etl.get_user_skeletons(args.motion_video)
-    elif args.use_pickle == str(0):
-        args.motion_video = "example/squat.mp4"
+    elif args.motion_video == "example/squat.mp4":
         with open("squat_user_skeletons.json", "rb") as fp:
             user_skeletons = pickle.load(fp)
-    elif args.use_pickle == str(1):
-        args.motion_video = "example/squatbad.mp4"
+    elif args.motion_video == "example/squatbad.mp4":
         with open("squatbad_user_skeletons.json", 'rb') as fp:
             user_skeletons = pickle.load(fp)
-    elif args.use_pickle == str(2):
-        args.motion_video = "example/squatpoop.mp4"
+    elif args.motion_video == "example/squatpoop.mp4":
         with open("squatterrible_user_skeletons.json", 'rb') as fp:
             user_skeletons = pickle.load(fp)
     else:
-        raise Exception("Unknown pickle number, try a number from 0 to 2")
+        raise Exception("The pickle for the motion video given has not been computed, please run without --use_pickle")
 
     # Find when the user was in a benchmark zone
     print("Finding benchmark zones")
