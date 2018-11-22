@@ -1,5 +1,8 @@
-import numpy as np
 from typing import Dict, Tuple, Sequence, Optional
+
+import numpy as np
+
+from skeleton import logger
 
 
 Point = Tuple[float, float]
@@ -11,8 +14,14 @@ class SKVector(object):
         self.head: np.ndarray = np.array(head)
         self.tail: np.ndarray = np.array(tail)
         self.vec = self.head - self.tail
-        self.magnitude = self._magnitude()
-        self.direction = self._direction()
+        self.magnitude = np.linalg.norm(self.vec)
+
+        if self.magnitude == 0:
+            logger.warning("Zero vector has no direction: {}".format(self.__repr__()))
+            self.direction = None
+        else:
+            self.direction = self.vec / self.magnitude
+
 
     def cos_similarity(self, other: 'SKVector') -> float:
         """
@@ -33,14 +42,9 @@ class SKVector(object):
         magnitude = self.magnitude * np.linalg.norm(other.vec)
         return np.dot(self.vec, other.vec) / magnitude
 
+
     def __repr__(self) -> str:
         return 'SKVector: {} -> {}'.format(tuple(self.head), tuple(self.tail))
-
-    def _magnitude(self) -> float:
-        return np.linalg.norm(self.vec)
-
-    def _direction(self) -> np.ndarray:
-        return self.vec / self.magnitude
 
 
 class Skeleton(object):
