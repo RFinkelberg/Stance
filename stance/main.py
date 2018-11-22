@@ -58,7 +58,7 @@ def main():
     # Score the user's benchmark zones
     logger.info("Calculating Score")
     user_score = score.compute_score(benchmark_zone_skeletons, motion.score)
-    print("Final Score: {}".format(user_score))
+    print("Final Score: {:.1f} / 100".format(user_score))
 
 
 if __name__ == "__main__":
