@@ -1,5 +1,6 @@
-import cv2
 import time
+import cv2
+from etl import logger
 from etl.template_fit import get_points_from_image
 from skeleton.skeleton import Skeleton
 
@@ -32,7 +33,8 @@ def get_user_skeletons(video_input):
             break
         start_time = time.time()
         user_skeletons.append(Skeleton(get_points_from_image(image)))
-        print(str(i) + " frame in " + str(time.time() - start_time) + " seconds")
+        logger.info("Processed frame {} in {} sec".format(i,
+                                                          time.time() - start_time))
         i += 1
 
     return user_skeletons

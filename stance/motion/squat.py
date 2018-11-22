@@ -1,10 +1,11 @@
 from functools import partial
 from typing import Sequence
 import json
-from .Motion import Motion
 import matplotlib.pyplot as plt
-from skeleton.skeleton import Skeleton, SKVector
 import numpy as np
+from motion import logger
+from skeleton.skeleton import Skeleton
+from .Motion import Motion
 
 
 class Squat(Motion):
@@ -55,7 +56,7 @@ class Squat(Motion):
         for scores, (mu, sig) in zip(score_array, gaussian_dists):
             scores = [score + gaussian(x, mu, sig)/20 for x, score in zip(xs, scores)]
             benchmark_zones.append(user_skeletons[int(np.argmax(np.array(scores)))])
-            print(int(np.argmax(np.array(scores))))
+            logger.info("Found Benchmark zone: frame {}".format(np.argmax(np.array(scores))))
         return benchmark_zones
         # for template in self.template_skeletons:
         #     cmp = partial(Squat.compare_skeletons, template)
