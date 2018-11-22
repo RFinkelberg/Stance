@@ -27,17 +27,23 @@ def main():
 
     # Find the user skeletons throughout the video
     logger.info("Fitting Video")
+    t0 = time()
     if not args.use_pickle:
-        user_skeletons = etl.get_user_skeletons(args.video_path)
+        user_skeletons, n_frames = etl.get_user_skeletons(args.video_path, verbose=verbosity)
+        logger.info("Fit {} frames in {:.2f} sec".format(n_frames, time() - t0))
+
     elif args.video_path == "example/squat.mp4":
         with open("squat_user_skeletons.json", "rb") as fp:
             user_skeletons = pickle.load(fp)
+
     elif args.video_path == "example/squatbad.mp4":
         with open("squatbad_user_skeletons.json", 'rb') as fp:
             user_skeletons = pickle.load(fp)
+
     elif args.video_path == "example/squatpoop.mp4":
         with open("squatterrible_user_skeletons.json", 'rb') as fp:
             user_skeletons = pickle.load(fp)
+
     else:
         logger.error("Error parsing command line arguments")
         raise ValueError("The pickle for the motion video {} given has not been computed,"
