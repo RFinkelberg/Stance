@@ -29,12 +29,22 @@ python get_models.py
 ## Quick Start
 ```commandline
 cd stance/
-python main.py -v example/squat.mp4
+python main.py -f example/squat.mp4
 ```
 
 ## Usage
 ```commandline
-python main.py -v path/to/video/file.mp4
+usage: main.py [-h] [-f VIDEO_PATH] [-v] [-p]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f VIDEO_PATH, --video_path VIDEO_PATH
+                        filepath to video containing the user performing a
+                        motion
+  -v, --verbose         Verbosity level. 1 (v) displays info, 2 (vv) displays
+                        debug logs
+  -p, --use_pickle      uses the pickle file corresponding to the video file
+                        given
 ```
 
 ## Using Pickle Files
@@ -47,18 +57,18 @@ with the relevant video file.
 * example/squatpoop.mp4
 
 ```commandline
-python main.py -v example/squatbad.mp4 -p
+python main.py -f example/squatbad.mp4 -p
 ```
 
 ## Authors
-* Jorge Betancourt
-* Roy Finkelberg
-* Aadarsh Padiyath
-* Emilee Sisson
+* [Jorge Betancourt](https://github.com/jbeta51)
+* [Roy Finkelberg](https://github.com/RFinkelberg)
+* [Aadarsh Padiyath](https://github.com/aspadiyath)
+* [Emilee Sisson](https://github.com/emileesisson)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
 
-## Etc
+## Development
 For more information on how we developed this project, check
 out our [stance](https://aspadiyath.github.io/stance/stance.html) website. 
