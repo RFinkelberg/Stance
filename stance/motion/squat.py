@@ -2,8 +2,6 @@ from functools import partial
 from typing import Sequence
 import logging
 import json
-
-import matplotlib.pyplot as plt
 import numpy as np
 
 from motion import logger

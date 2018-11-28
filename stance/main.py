@@ -4,7 +4,7 @@ import pickle
 from time import time
 from os.path import basename, splitext, isfile
 
-from etl import template_fit, etl
+from etl import etl
 from motion.squat import Squat
 from predict import score, overlay
 
@@ -59,7 +59,7 @@ def main():
 
     # Overlay the template skeletons on the user's video
     logger.info("Overlaying Video")
-    overlay.display_overlay(args.video_path, motion.template_skeletons)
+    overlay.display_overlay(args.video_path, motion.template_skeletons, benchmark_zone_indices, user_skeletons)
     # overlay.compare_user_skeletons(args.video_path, benchmark_zone_indices, user_skeletons, motion)
 
     # Score the user's benchmark zones
