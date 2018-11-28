@@ -14,6 +14,10 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
     input_video : String
         path to the video of the user performing the motion
     template_skeletons : List[Skeletons]
+    benchmark_indices : List[ints]
+        frames where benchmark skeletons should be overlayed
+    user_skeletons : List[Skeletons]
+        user's skeleton for each frame of the video
     """
     cap = cv2.VideoCapture(input_video)
     numFrames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -21,6 +25,7 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     # used for scaling template skeleton to user video
+    # 1280 and 720 are the dimensions of the template video
     scale_x = width / 1280
     scale_y = height / 720
     count = 0
