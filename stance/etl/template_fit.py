@@ -8,7 +8,7 @@ import cv2
 """
 
 
-def get_points_from_image(image):
+def get_points_from_image(image, get_points):
     """
     COCO Output Format
     Neck – 1, Right Shoulder – 2, Right Elbow – 3, Right Wrist – 4,
@@ -20,6 +20,9 @@ def get_points_from_image(image):
     ----------
     image : ndarray
         numpy array containing image
+
+    get_points : List[Int]
+        COCO Indices of points to retrieve
 
     Returns
     -------
@@ -54,27 +57,25 @@ def get_points_from_image(image):
     # Empty list to store the detected keypoints
     points = []
 
+    get_points = set(get_points)
     for i in range(n_points):
-        # confidence map of corresponding body's part.
-        prob_map = output[0, i, :, :]
+        if i in get_points:
+            # confidence map of corresponding body's part.
+            prob_map = output[0, i, :, :]
 
-        # Find global maxima of the probMap.
-        _, prob, _, point = cv2.minMaxLoc(prob_map)
+            # Find global maxima of the probMap.
+            _, prob, _, point = cv2.minMaxLoc(prob_map)
 
-        # Scale the point to fit on the original image
-        x = (frame_width * point[0]) / w
-        y = (frame_height * point[1]) / h
+            # Scale the point to fit on the original image
+            x = (frame_width * point[0]) / w
+            y = (frame_height * point[1]) / h
 
-        if prob > threshold:
-            # Add the point to the list if the probability is greater than the threshold
-            points.append((int(x), int(y)))
+            if prob > threshold:
+                # Add the point to the list if the probability is greater than the threshold
+                points.append((int(x), int(y)))
+            else:
+                points.append(None)
         else:
             points.append(None)
 
     return points
-
-
-def get_points(front_image, profile_image):
-    front_image_points = get_points_from_image(cv2.imread(front_image))
-    profile_image_points = get_points_from_image(cv2.imread(profile_image))
-    return front_image_points, profile_image_points

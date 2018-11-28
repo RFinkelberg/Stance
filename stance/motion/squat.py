@@ -15,6 +15,7 @@ class Squat(Motion):
     def __init__(self, verbose: int = 0):
         self.template_skeletons = self.create_template_skeletons()
         logger.setLevel(logging.WARNING - (10 * verbose))
+        self.relevant_coco_points = [1, 11, 12, 13]
 
     # --------------- IMPLEMENTED ABSTRACT METHODS ------------------
 
@@ -70,6 +71,9 @@ class Squat(Motion):
         # for c, scores, (mu, sig) in zip(colors, benchmark_zones, gaussian_dists):
         #     scores = [score + gaussian(x, mu, sig)/4 for x, score in zip(xs, scores)]
         #     plt.plot(xs, scores, c)
+        #     plt.title("Similarity scores for each frame on each benchmark zone")
+        #     plt.xlabel("Frame Number")
+        #     plt.ylabel("Similarity Score")
         # plt.show()
 
     @staticmethod
