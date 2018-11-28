@@ -2,6 +2,7 @@ import cv2
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+import time
 
 
 def display_overlay(input_video, template_skeletons, benchmark_indices):
@@ -32,8 +33,11 @@ def display_overlay(input_video, template_skeletons, benchmark_indices):
                     pointA = (points.head[0], points.head[1])
                     pointB = (points.tail[0], points.tail[1])
                     cv2.line(frame, pointA, pointB, (0, 255, 255), 4)
-
-        cv2.imshow('Frame', frame)
+        if frame is not None:
+            cv2.imshow('Frame', frame)
+        # pause video when skeleton is visible
+        if i == benchmark_indices[count - 1] + 1:
+            time.sleep(1)
         if cv2.waitKey(70) & 0xFF == ord('q'):
             break
 
