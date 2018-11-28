@@ -57,15 +57,6 @@ with the relevant video file.
 * example/squatpoop.mp4
 
 ```commandline
-python main.py -v example/squatbad.mp4 -p
-```
-
-## Authors
-* Jorge Betancourt
-* Roy Finkelberg
-* Aadarsh Padiyath
-* Emilee Sisson
-=======
 python main.py -f example/squatbad.mp4 -p
 ```
 
@@ -74,15 +65,10 @@ python main.py -f example/squatbad.mp4 -p
 * [Roy Finkelberg](https://github.com/RFinkelberg)
 * [Aadarsh Padiyath](https://github.com/aspadiyath)
 * [Emilee Sisson](https://github.com/emileesisson)
->>>>>>> 1a9cd6df1102317cdb02b38a4b1d4a8a3febfc1b
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
 
-<<<<<<< HEAD
-## Etc
-=======
 ## Development
->>>>>>> 1a9cd6df1102317cdb02b38a4b1d4a8a3febfc1b
 For more information on how we developed this project, check
 out our [stance](https://aspadiyath.github.io/stance/stance.html) website. 
