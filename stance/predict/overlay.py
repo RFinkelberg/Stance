@@ -1,8 +1,10 @@
 import cv2
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 
-def display_overlay(input_video, template_skeletons):
+def display_overlay(input_video, template_skeletons, benchmark_indices):
     """
     This method displays the correct template skeleton the user is supposed to be
     mimicking on top of the user while performing the motion
@@ -13,7 +15,30 @@ def display_overlay(input_video, template_skeletons):
         path to the video of the user performing the motion
     template_skeletons : List[Skeletons]
     """
-    pass
+    cap = cv2.VideoCapture(input_video)
+    numFrames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    print(width, height)
+    count = 0
+
+    for i in range(numFrames):
+        _, frame = cap.read()
+        if count < len(benchmark_indices) and i == benchmark_indices[count]:
+            temp = list(template_skeletons[count].vectors.values())
+            count += 1
+            for points in temp:
+                if points is not None:
+                    pointA = (points.head[0], points.head[1])
+                    pointB = (points.tail[0], points.tail[1])
+                    cv2.line(frame, pointA, pointB, (0, 255, 255), 4)
+
+        cv2.imshow('Frame', frame)
+        if cv2.waitKey(70) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 def compare_user_skeletons(input_video, idxs, user_skeletons, motion):

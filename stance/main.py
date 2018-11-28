@@ -58,7 +58,7 @@ def main():
 
     # Overlay the template skeletons on the user's video
     logger.info("Overlaying Video")
-    overlay.display_overlay(args.video_path, motion.template_skeletons)
+    overlay.display_overlay(args.video_path, motion.template_skeletons, benchmark_zone_indices)
     # overlay.compare_user_skeletons(args.motion_video, benchmark_zone_indices, user_skeletons, motion)
 
     # Score the user's benchmark zones
