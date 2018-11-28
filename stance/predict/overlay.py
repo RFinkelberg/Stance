@@ -1,6 +1,5 @@
 import cv2
 import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import time
 import numpy as np
@@ -30,7 +29,10 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
         _, frame = cap.read()
 
         # User skeleton
-        temp = list(user_skeletons[i].vectors.values())
+        try:
+            temp = list(user_skeletons[i].vectors.values())
+        except:
+            break
         for points in temp:
             if points is not None:
                 pointA = (points.head[0], points.head[1])
@@ -42,6 +44,7 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
             temp_skeleton = template_skeletons[count]
             temp = list(temp_skeleton.vectors.values())
             count += 1
+            # calculate how much to shift the scaled template skeleton by
             user_center = user_skeletons[i].vectors['l_spine'].head
             temp_center = temp_skeleton.vectors['l_spine'].head
             dif_x = temp_center[0] * scale_x - user_center[0]
