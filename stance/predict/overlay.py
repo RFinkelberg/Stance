@@ -1,8 +1,6 @@
 import cv2
-import matplotlib
 import matplotlib.pyplot as plt
 import time
-import numpy as np
 
 def display_overlay(input_video, template_skeletons, benchmark_indices, user_skeletons):
     """
@@ -36,7 +34,7 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
         # User skeleton
         try:
             temp = list(user_skeletons[i].vectors.values())
-        except:
+        except IndexError:
             break
         for points in temp:
             if points is not None:

@@ -4,7 +4,7 @@ import pickle
 from time import time
 from os.path import basename, splitext, isfile
 
-from etl import template_fit, etl
+from etl import etl
 from motion.squat import Squat
 from predict import score, overlay
 
