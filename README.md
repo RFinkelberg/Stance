@@ -45,6 +45,8 @@ optional arguments:
                         debug logs
   -p, --use_pickle      uses the pickle file corresponding to the video file
                         given
+  -s, --save_pickle     makes a pickle file corresponding to the video file
+                        given
 ```
 
 ## Using Pickle Files
@@ -58,6 +60,15 @@ with the relevant video file.
 
 ```commandline
 python main.py -f example/squatbad.mp4 -p
+```
+
+## Saving a Pickle File
+If you would like to save the output of the neural net to pickle file so the system
+spends less time computing the user skeletons of the video in future runs, simply
+attach a "-s" to the end of the command.
+
+```commandline
+python main.py -f example/squat.mp4 -s
 ```
 
 ## Authors

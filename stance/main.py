@@ -2,6 +2,7 @@ import argparse
 import logging
 import pickle
 from time import time
+from os.path import basename, splitext, isfile
 
 from etl import template_fit, etl
 from motion.squat import Squat
@@ -16,6 +17,8 @@ def main():
                         action="count")
     parser.add_argument("-p", "--use_pickle", help="uses the pickle file corresponding to the video file given",
                         action="store_true")
+    parser.add_argument("-s", "--save_pickle", help="makes a pickle file corresponding to the video file given",
+                        action="store_true")
     args = parser.parse_args()
 
     verbosity = args.verbose or 0
@@ -29,25 +32,23 @@ def main():
     logger.info("Fitting Video")
     t0 = time()
     if not args.use_pickle:
-        user_skeletons, n_frames = etl.get_user_skeletons(args.video_path, verbose=verbosity)
+        user_skeletons, n_frames = etl.get_user_skeletons(args.video_path,
+                                                          motion.relevant_coco_points, verbose=verbosity)
         logger.info("Fit {} frames in {:.2f} sec".format(n_frames, time() - t0))
-
-    elif args.video_path == "example/squat.mp4":
-        with open("squat_user_skeletons.json", "rb") as fp:
-            user_skeletons = pickle.load(fp)
-
-    elif args.video_path == "example/squatbad.mp4":
-        with open("squatbad_user_skeletons.json", 'rb') as fp:
-            user_skeletons = pickle.load(fp)
-
-    elif args.video_path == "example/squatpoop.mp4":
-        with open("squatterrible_user_skeletons.json", 'rb') as fp:
-            user_skeletons = pickle.load(fp)
+        if args.save_pickle:
+            filename = splitext(basename(args.video_path))[0] + "_user_skeletons.json"
+            with open(filename, "wb") as fp:
+                pickle.dump(user_skeletons, fp)
 
     else:
-        logger.error("Error parsing command line arguments")
-        raise ValueError("The pickle for the motion video {} given has not been computed,"
-                         " please run without --use_pickle".format(args.video_path))
+        filename = splitext(basename(args.video_path))[0] + "_user_skeletons.json"
+        if isfile(filename):
+            with open(filename, "rb") as fp:
+                user_skeletons = pickle.load(fp)
+        else:
+            logger.error("Error parsing command line arguments")
+            raise ValueError("The pickle for the motion video {} given has not been computed,"
+                             " please run without --use_pickle".format(args.video_path))
 
     # Find when the user was in a benchmark zone
     logger.info("Finding Benchmark Zones")
@@ -59,7 +60,7 @@ def main():
     # Overlay the template skeletons on the user's video
     logger.info("Overlaying Video")
     overlay.display_overlay(args.video_path, motion.template_skeletons)
-    # overlay.compare_user_skeletons(args.motion_video, benchmark_zone_indices, user_skeletons, motion)
+    # overlay.compare_user_skeletons(args.video_path, benchmark_zone_indices, user_skeletons, motion)
 
     # Score the user's benchmark zones
     logger.info("Calculating Score")
