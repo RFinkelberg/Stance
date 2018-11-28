@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import time
 
 
-def display_overlay(input_video, template_skeletons, benchmark_indices):
+def display_overlay(input_video, template_skeletons, benchmark_indices, user_skeletons):
     """
     This method displays the correct template skeleton the user is supposed to be
     mimicking on top of the user while performing the motion
@@ -25,6 +25,14 @@ def display_overlay(input_video, template_skeletons, benchmark_indices):
 
     for i in range(numFrames):
         _, frame = cap.read()
+        temp = list(user_skeletons[i].vectors.values())
+        for points in temp:
+            if points is not None:
+                pointA = (points.head[0], points.head[1])
+                pointB = (points.tail[0], points.tail[1])
+                cv2.line(frame, pointA, pointB, (0, 255, 255), 4)
+
+        # Template skeleton
         if count < len(benchmark_indices) and i == benchmark_indices[count]:
             temp = list(template_skeletons[count].vectors.values())
             count += 1
@@ -32,7 +40,7 @@ def display_overlay(input_video, template_skeletons, benchmark_indices):
                 if points is not None:
                     pointA = (points.head[0], points.head[1])
                     pointB = (points.tail[0], points.tail[1])
-                    cv2.line(frame, pointA, pointB, (0, 255, 255), 4)
+                    cv2.line(frame, pointA, pointB, (255, 0, 0), 4)
         if frame is not None:
             cv2.imshow('Frame', frame)
         # pause video when skeleton is visible
