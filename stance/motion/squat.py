@@ -3,6 +3,8 @@ from typing import Sequence
 import logging
 import json
 
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import numpy as np
 
