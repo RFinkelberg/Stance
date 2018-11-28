@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import time
-
+import numpy as np
 
 def display_overlay(input_video, template_skeletons, benchmark_indices, user_skeletons):
     """
@@ -20,11 +20,16 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
     numFrames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    print(width, height)
+
+    # used for scaling template skeleton to user video
+    scale_x = width / 1280
+    scale_y = height / 720
     count = 0
 
     for i in range(numFrames):
         _, frame = cap.read()
+
+        # User skeleton
         temp = list(user_skeletons[i].vectors.values())
         for points in temp:
             if points is not None:
@@ -32,15 +37,20 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
                 pointB = (points.tail[0], points.tail[1])
                 cv2.line(frame, pointA, pointB, (0, 255, 255), 4)
 
-        # Template skeleton
+        # Template skeleton (scale and translate to align with center of gravity)
         if count < len(benchmark_indices) and i == benchmark_indices[count]:
-            temp = list(template_skeletons[count].vectors.values())
+            temp_skeleton = template_skeletons[count]
+            temp = list(temp_skeleton.vectors.values())
             count += 1
+            user_center = user_skeletons[i].vectors['l_spine'].head
+            temp_center = temp_skeleton.vectors['l_spine'].head
+            dif_x = temp_center[0] * scale_x - user_center[0]
+            dif_y = temp_center[1] * scale_y - user_center[1]
             for points in temp:
                 if points is not None:
-                    pointA = (points.head[0], points.head[1])
-                    pointB = (points.tail[0], points.tail[1])
-                    cv2.line(frame, pointA, pointB, (255, 0, 0), 4)
+                    pointA = (int(points.head[0] * scale_x - dif_x), int(points.head[1] * scale_y - dif_y))
+                    pointB = (int(points.tail[0] * scale_x - dif_x), int(points.tail[1] * scale_y - dif_y))
+                    cv2.line(frame, pointA, pointB, (0, 255, 0), 4)
         if frame is not None:
             cv2.imshow('Frame', frame)
         # pause video when skeleton is visible
