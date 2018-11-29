@@ -28,6 +28,8 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
     scale_y = height / 720
     count = 0
 
+    out = cv2.VideoWriter('output.mp4', -1, 20.0, (width, height))
+
     for i in range(numFrames):
         _, frame = cap.read()
 
@@ -59,11 +61,15 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
                     cv2.line(frame, pointA, pointB, (0, 255, 0), 4)
         if frame is not None:
             cv2.imshow('Frame', frame)
+            out.write(frame)
         # pause video when skeleton is visible
         if i == benchmark_indices[count - 1] + 1:
             time.sleep(1)
         if cv2.waitKey(70) & 0xFF == ord('q'):
             break
+        if i == benchmark_indices[count - 1]:
+            for j in range(20):
+                out.write(frame)
 
     cap.release()
     cv2.destroyAllWindows()
