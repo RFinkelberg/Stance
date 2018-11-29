@@ -2,7 +2,7 @@ import argparse
 import logging
 import pickle
 from time import time
-from os.path import basename, splitext, isfile
+from os.path import basename, splitext, isfile, join
 
 from etl import etl
 from motion.squat import Squat
@@ -37,11 +37,13 @@ def main():
         logger.info("Fit {} frames in {:.2f} sec".format(n_frames, time() - t0))
         if args.save_pickle:
             filename = splitext(basename(args.video_path))[0] + "_user_skeletons.json"
+            filename = join('example', filename)
             with open(filename, "wb") as fp:
                 pickle.dump(user_skeletons, fp)
 
     else:
         filename = splitext(basename(args.video_path))[0] + "_user_skeletons.json"
+        filename = join('example', filename)
         if isfile(filename):
             with open(filename, "rb") as fp:
                 user_skeletons = pickle.load(fp)
