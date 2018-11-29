@@ -72,6 +72,7 @@ def display_overlay(input_video, template_skeletons, benchmark_indices, user_ske
                 out.write(frame)
 
     cap.release()
+    out.release()
     cv2.destroyAllWindows()
 
 
